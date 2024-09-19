@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Google Generative AI with Image</title>
+  </head>
+  <body>
+    <h1>Google Generative AI Test (Text + Image)</h1>
+
+    <h2>Generate Content from Prompt and Image</h2>
+    <form id="generate-prompt-form" onsubmit="return generateContent(event)">
+      <label>
+        Enter Prompt:
+        <input type="text" id="prompt-input" required />
+      </label>
+      <br />
+      <label>
+        Upload Image:
+        <input type="file" id="image-input" accept="image/*" required />
+      </label>
+      <br />
+      <button type="submit">Generate</button>
+    </form>
+    <pre id="generated-content"></pre>
+
+    <script>
+      async function generateContent(event) {
+        event.preventDefault();
+
+        const prompt = document.getElementById("prompt-input").value;
+        const imageFile = document.getElementById("image-input").files[0];
+
+        const formData = new FormData();
+        formData.append("prompt", prompt);
+        formData.append("image", imageFile); // Append the image file
+
+        // Make the API request
+        const response = await fetch("http://localhost:3000/api/generate", {
+          method: "POST",
+          body: formData, // Send FormData to handle both text and file
+        });
+
+        const data = await response.json();
+
+        // Display the generated content
+        document.getElementById("generated-content").innerText = data.text;
+      }
+    </script>
+  </body>
+</html>

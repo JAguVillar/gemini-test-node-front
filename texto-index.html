@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Google Generative AI API</title>
+  </head>
+  <body>
+    <h1>TEST GEMINI</h1>
+
+    <h2>Gnerar desde Prompt</h2>
+    <form id="generate-prompt-form" onsubmit="return generateContent(event)">
+      <label>
+        Prompt:
+        <input type="text" id="prompt-input" required />
+      </label>
+      <button type="submit">Generar</button>
+    </form>
+    <pre id="generated-content"></pre>
+
+    <script>
+      // Function to generate content from prompt
+      async function generateContent(event) {
+        event.preventDefault();
+
+        const prompt = document.getElementById("prompt-input").value;
+
+        // Make the API request
+        const response = await fetch("http://localhost:3000/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt }), // Send the prompt as JSON
+        });
+
+        // Get the result as JSON
+        const data = await response.json();
+
+        // Display the generated content in the preformatted text area
+        document.getElementById("generated-content").innerText = data.text;
+      }
+    </script>
+  </body>
+</html>
